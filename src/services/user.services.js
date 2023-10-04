@@ -68,3 +68,15 @@ export const searchBYInterval=async(start_date,end_date)=>{
     }}
 )
 }
+
+export const getUserBirth_day=async()=>{
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1; // Month is zero-indexed
+    const currentDay = today.getDate();
+    return await User.findAll({
+        where: {
+            [Sequelize.fn('MONTH', Sequelize.col('birth_day'))]: currentMonth,
+            [Sequelize.fn('DAY', Sequelize.col('birth_day'))]: currentDay,
+          },
+    })
+}
