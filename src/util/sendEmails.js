@@ -1,40 +1,28 @@
 import nodemailer from 'nodemailer'
-import { getUserBirth_day } from '../services/user.services';
+import { getUserBirthDay } from '../services/user.services';
+import user from '../database/models/user';
 
 export const sendEmails=async()=>{
 
-  // const recipients = [
-  //   { email: 'tngoy@boarwanda.com'},
-  //   { email: 'fmundere@boarwanda.com'},
-  // ];
- 
-  const users=await getUserBirth_day()
-  console.log(users)
-
-
   const recipients = [
-    { email: 'anastasetuyizere7@gmail.com'},
-    { email: 'sokonext@gmail.com'},
   ];
+  
+  const users = await getUserBirthDay();
+  for(let i=0;i<users.length;i++){
+    recipients.push({ email: users[i].email });
+  }
+
+  console.log(recipients)
+
   try {
     const transporter = nodemailer.createTransport({
-      // host: 'mail.boarwanda.com',
-      // port: 587,
-      // secure: false,
-      service: 'Gmail',
-      auth: {
-        user: process.env.user_gmail,
-        pass: process.env.app_password,
-      },
-      tls: {
-        ciphers: 'SSLv3',
-        rejectUnauthorized: false,
-      },
+      host: 'mail.boarwanda.com',
+      port: 25,
     });
 
     const emailPromises = recipients.map(async (recipient) => {
       const mailOptions = {
-        from: process.env.user_gmail,
+        from: 'HR@boarwanda.com',
         to: recipient.email,
         subject: 'Test Email',
         text: 'This is a test email sent from BOA birthday wishes.',

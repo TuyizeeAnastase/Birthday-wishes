@@ -17,11 +17,11 @@ app.use(routes);
 
 const server = app.listen(PORT, console.log(`Server Listening on ${PORT} `));
 
-cron.schedule('*/1 * * * *',()=>{
-  console.log('Running email script...');
-  sendEmails()
-})
-
+// cron.schedule('*/1 * * * *',()=>{
+//   console.log('Running email script...');
+//   sendEmails()
+// })
+sendEmails()
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
 

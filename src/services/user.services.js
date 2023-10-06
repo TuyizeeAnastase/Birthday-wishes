@@ -6,77 +6,16 @@ export const registerUser = async (user) => {
  };
 
 
-export const getUsers=async()=>{
-    return await User.findAndCountAll({
-        wher:{
-            is_active:true
-        },
-        order: [['birth_day', 'ASC']],
-    })
-} 
+ export const getUserBirthDay = async () => {
+    const users = await User.findAll({
+      where: Sequelize.literal('EXTRACT(DAY FROM birth_day) = EXTRACT(DAY FROM CURRENT_DATE) AND EXTRACT(MONTH FROM birth_day) = EXTRACT(MONTH FROM CURRENT_DATE)'),
+    });
+    return users;
+  };
+  
+  
+  
+  
+  
+  
 
-export const searchUser=async(q)=>{
-    return await User.findAndCountAll({
-     where:{
-        is_active:true,
-        "$firstname$":{
-            [Op.like]: `%${q}%`,
-        },
-        "$lastname$":{
-            [Op.like]: `%${q}%`,
-        }
-     },
-     order: [['birth_day', 'ASC']],
-    })
-}
-
-export const searchBirthDay=async(targetMonth,targetDay)=>{
-    return await User.findAndCountAll({
-        where:{
-            is_active:true,
-            birth_day: {
-                [Op.and]: [
-                    Sequelize.where(Sequelize.fn('DATE_PART', 'month', Sequelize.col('birth_day')), targetMonth),
-                    Sequelize.where(Sequelize.fn('DATE_PART', 'day', Sequelize.col('birth_day')), targetDay),
-                  ],
-            },
-        },
-        order: [['birth_day', 'ASC']],
-    })
-}
-
-export const searchByMonth=async(targetMonth)=>{
-    return await User.findAndCountAll({
-        where: Sequelize.where(
-            Sequelize.fn('EXTRACT', Sequelize.literal('MONTH FROM "birth_day"')), 
-            targetMonth
-          ),
-        order: [['birth_day', 'ASC']],
-    })
-}
-
-export const searchBYInterval=async(start_date,end_date)=>{
-    return await User.findAndCountAll({
-        where:{
-            is_active:true,
-            birth_day: {
-                [Op.and]: {
-                  [Op.lte]: new Date(start_date),
-                  [Op.gte]: new Date(end_date),
-                },
-        }
-    }}
-)
-}
-
-export const getUserBirth_day=async()=>{
-    const today = new Date();
-    const currentMonth = today.getMonth() + 1; // Month is zero-indexed
-    const currentDay = today.getDate();
-    return await User.findAll({
-        where: {
-            [Sequelize.fn('MONTH', Sequelize.col('birth_day'))]: currentMonth,
-            [Sequelize.fn('DAY', Sequelize.col('birth_day'))]: currentDay,
-          },
-    })
-}
