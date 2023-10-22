@@ -13,6 +13,13 @@ export const registerUser = async (user) => {
     return users;
   };
   
+  export const getAllUsers=async()=>{
+    return User.findAll({})
+  }
+
+  export const registerMany=async(users)=>{
+    return User.bulkCreate(users)
+  }
   
   
   

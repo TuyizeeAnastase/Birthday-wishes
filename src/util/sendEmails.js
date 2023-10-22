@@ -1,18 +1,22 @@
 import nodemailer from 'nodemailer'
 import { getUserBirthDay } from '../services/user.services';
-import user from '../database/models/user';
+import ejs from 'ejs';
+import path from 'path'
 
 export const sendEmails=async()=>{
 
   const recipients = [
   ];
+  const names=[
+  ];
   
   const users = await getUserBirthDay();
   for(let i=0;i<users.length;i++){
     recipients.push({ email: users[i].email });
+    names.push({name:users[i].firstname})
   }
 
-  console.log(recipients)
+  console.log(recipients,names.map(name => name.name))
 
   try {
     const transporter = nodemailer.createTransport({
@@ -21,11 +25,21 @@ export const sendEmails=async()=>{
     });
 
     const emailPromises = recipients.map(async (recipient) => {
+
+      const templateData = {
+        userName: names.map(name => name.name),
+        imageUrl: 'https://res.cloudinary.com/depljf8uc/image/upload/v1698698116/wish_lyzlqg.jpg',
+      };
+
+      const emailTemplatePath = path.join(__dirname, 'emailTemplate.ejs');
+
+      const emailHTML = await ejs.renderFile(emailTemplatePath, templateData);
+
       const mailOptions = {
         from: 'HR@boarwanda.com',
         to: recipient.email,
-        subject: 'Test Email',
-        text: 'This is a test email sent from BOA birthday wishes.',
+        subject: 'Birthday Greetings',
+        html:emailHTML
       };
       const info = await transporter.sendMail(mailOptions);
       console.log(`Email sent to ${recipient.email}: ${info.response}`);

@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     is_active: DataTypes.BOOLEAN,
     role_id: DataTypes.INTEGER,
-    birth_day: DataTypes.DATEONLY
+    birth_day: DataTypes.DATEONLY,
+    password:DataTypes.STRING
   }, {});
   User.associate=function(models){
     User.hasOne(models.Role,{
