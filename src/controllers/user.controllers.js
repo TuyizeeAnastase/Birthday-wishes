@@ -1,6 +1,30 @@
-import { registerUser,getUsers,searchUser,searchBirthDay,searchByMonth,searchBYInterval } from "../services/user.services";
+import { registerUser,getUsers,searchUser,searchBirthDay,searchByMonth,searchBYInterval,getAllUsers } from "../services/user.services";
+import multer from "multer";
+import excel from 'exceljs'
+import User from "../database/models";
+
 
 class UserController{
+    async login(req,res){
+        try{
+            const {password}=req.body
+            const user=req.user
+            if (password!=user.password) {
+                return res.status(401).json({
+                  message: "Password does not match!",
+                });
+              }
+            return res.status(200).json({
+                user
+            })
+
+        }catch(error){
+            return res.status(500).json({
+                message: "Unable to login, try again",
+                error: error.message,
+              });
+        }
+    }
     async adduser(req,res){
         try{
             const {firstname,lastname,email,birth_day}=req.body
@@ -43,6 +67,32 @@ class UserController{
         }catch(error){
             return res.status(500).json({
                 message: "Unable to get all Users, try again",
+                error: error.message,
+              });
+        }
+    }
+
+    async getStaffs(req,res){
+        try{
+            const users=await getAllUsers()
+            return res.status(200).json({
+                users
+            })
+    
+        }catch(error){
+            return res.status(500).json({
+                message: "Unable to get all Users, try again",
+                error: error.message,
+              });
+        }
+    }
+
+    async addManyStaff(req,res){
+        try{
+            console.log(req.file)
+        }catch(error){
+            return res.status(500).json({
+                message: "Unable to add users, try again",
                 error: error.message,
               });
         }
