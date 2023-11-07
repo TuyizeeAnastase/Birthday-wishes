@@ -7,7 +7,7 @@ import { checkUserExistByEmail} from '../middleware/user.middleware'
 const routes=express()
 
 const storage = multer.memoryStorage(); // Use memory storage to handle file uploads
-const upload = multer({ storage: storage });
+const upload = multer({ dest: 'uploads/' }); 
 
 // const upload = multer();
 
@@ -17,7 +17,7 @@ routes.route('/')
 
 routes.post('/login',loginValidation,checkUserExistByEmail,userControllers.login)
 
-routes.post('/many',upload.single('xlsx'),userControllers.addManyStaff)
+routes.post('/many',upload.single('file'),userControllers.addManyStaff)
 
 
 export default routes

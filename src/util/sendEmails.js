@@ -2,8 +2,12 @@ import nodemailer from 'nodemailer'
 import { getUserBirthDay } from '../services/user.services';
 import ejs from 'ejs';
 import path from 'path'
+import {getMessage} from '../services/message.service'
 
 export const sendEmails=async()=>{
+
+  const message=await getMessage('birthday')
+  const content=message.text
 
   const recipients = [
   ];
@@ -28,6 +32,7 @@ export const sendEmails=async()=>{
 
       const templateData = {
         userName: names.map(name => name.name),
+        content:content,
         imageUrl: 'https://res.cloudinary.com/depljf8uc/image/upload/v1698698116/wish_lyzlqg.jpg',
       };
 

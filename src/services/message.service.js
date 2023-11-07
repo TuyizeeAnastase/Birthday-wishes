@@ -13,12 +13,16 @@ export const getMessage=async(title)=>{
     })
 }
 
-export const updateMessage=async(id,updated)=>{
-    return await Message.update(updated,
-        {
-            where: {
-                id: id,
-              },
-        }
-        )
+export const getAllMessage=async()=>{
+    return await Message.findAll()
+}
+
+export const updateMessage=async(updated,id)=>{
+    const updating = await Message.update(updated,{
+        where: {
+            id:id
+          },
+    })
+
+    return updating;
 }
