@@ -1,7 +1,5 @@
 import { registerUser,getUsers,searchUser,searchBirthDay,searchByMonth,searchBYInterval,getAllUsers } from "../services/user.services";
-import multer from "multer";
-import excel from 'exceljs'
-import User from "../database/models";
+const XLSX = require('xlsx');
 
 
 class UserController{
@@ -89,7 +87,12 @@ class UserController{
 
     async addManyStaff(req,res){
         try{
-            console.log(req.file)
+            const usersData = req.body; // An array of user data
+             const users = parseExcelData(usersData);
+            const newUsers=await addManyStaff(users)
+            res.status(201).json({
+                newUsers
+            })
         }catch(error){
             return res.status(500).json({
                 message: "Unable to add users, try again",
