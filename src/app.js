@@ -21,7 +21,7 @@ const server = app.listen(PORT, console.log(`Server Listening on ${PORT} `));
 
 // cron.schedule('*/1 * * * *',()=>{
 //   console.log('Running email script...');
-//   // sendEmails()
+//   sendEmails()
 // })
 // sendEmails()
 process.on("unhandledRejection", (err, promise) => {

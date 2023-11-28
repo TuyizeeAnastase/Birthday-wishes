@@ -1,5 +1,5 @@
-import { registerUser,getUsers,searchUser,searchBirthDay,searchByMonth,searchBYInterval,getAllUsers } from "../services/user.services";
-const XLSX = require('xlsx');
+import { registerUser,registerMany,getUsers,searchUser,searchBirthDay,searchByMonth,searchBYInterval,getAllUsers } from "../services/user.services";
+import xlsx from 'xlsx'
 
 
 class UserController{
@@ -87,10 +87,13 @@ class UserController{
 
     async addManyStaff(req,res){
         try{
-            const usersData = req.body; // An array of user data
-             const users = parseExcelData(usersData);
-            const newUsers=await addManyStaff(users)
+            const { path, originalname } = req.file;
+            const workbook = xlsx.readFile(path);
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const data = xlsx.utils.sheet_to_json(sheet);
+            const newUsers=await registerMany(data)
             res.status(201).json({
+                message: "New users added successfully",
                 newUsers
             })
         }catch(error){
