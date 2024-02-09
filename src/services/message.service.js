@@ -6,11 +6,12 @@ export const addMessage=async(message)=>{
 }
 
 export const getMessage=async(title)=>{
-    return await Message.findOne({
+    const message= await Message.findOne({
         where:{
             title:title
         }
     })
+    return message
 }
 
 export const getAllMessage=async()=>{

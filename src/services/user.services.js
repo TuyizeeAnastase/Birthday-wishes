@@ -14,15 +14,20 @@ export const registerUser = async (user) => {
   };
   
   export const getAllUsers=async()=>{
-    return User.findAll({})
+    const users=await User.findAll({})
+    return users
   }
 
   export const registerMany=async(users)=>{
     return User.bulkCreate(users)
   }
-  
-  
-  
-  
+
+  export const deletingUser=async(id)=>{
+    return await User.destroy({
+      where: {
+        id: id
+      }
+    });
+  }
   
 

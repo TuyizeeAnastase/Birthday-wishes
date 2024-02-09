@@ -44,6 +44,7 @@
     "babel-node": "^0.0.1-security",
     "better-npm-run": "^0.1.1",
     "body-parser": "^1.20.2",
+    "convert-excel-to-json": "^1.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",

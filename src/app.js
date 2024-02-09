@@ -19,7 +19,11 @@ app.use(routes);
 
 const server = app.listen(PORT, console.log(`Server Listening on ${PORT} `));
 
-// cron.schedule('*/1 * * * *',()=>{
+cron.schedule('0 0 0 * * *',()=>{
+  console.log('Running email script...');
+  sendEmails()
+})
+// cron.schedule('0 */4 * * *',()=>{
 //   console.log('Running email script...');
 //   sendEmails()
 // })

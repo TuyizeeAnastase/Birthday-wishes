@@ -49,6 +49,8 @@ export const sendEmails=async()=>{
 
     await Promise.all(emailPromises);
     console.log('All emails sent successfully.');
+    console.log(recipients)
+  
   } catch (error) {
     console.error('Error sending emails:', error);
   }

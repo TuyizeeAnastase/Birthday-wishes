@@ -14,6 +14,7 @@ const upload = multer({ dest: 'uploads/' });
 routes.route('/')
 .post(userValidation,userControllers.adduser)
 .get(userControllers.getStaffs)
+.delete(userControllers.deleteUser)
 
 routes.post('/login',loginValidation,checkUserExistByEmail,userControllers.login)
 
